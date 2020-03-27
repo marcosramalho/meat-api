@@ -24,8 +24,8 @@ export class Server {
         });
         
         this.application.use(restify.plugins.queryParser());
+        this.application.use(restify.plugins.bodyParser());
                 
-
         // routes 
         for (let router of routers) {
           router.applyRoutes(this.application);
@@ -34,9 +34,7 @@ export class Server {
         this.application.listen(environment.server.port, () => {
           resolve(this.application);
         });
-
-        
-        
+                
       } catch (error) {
         reject(error);
       }
