@@ -1,6 +1,8 @@
 import * as restify from 'restify';
+import * as mongoose from 'mongoose';
 import { Router } from "../common/router";
 import { User } from './users.model';
+
 
 class UsersRouter extends Router {
 
@@ -29,6 +31,20 @@ class UsersRouter extends Router {
       let user = new User(req.body);      
       user.save().then(user => {
         user.password = undefined;
+        res.json(user)
+        return next()
+      })
+    })
+
+    application.put('/users/:id', (req, res, next) => {
+      const options = { overwrite: true }
+      User.update({ _id: req.params.id}, req.body, options).exec().then(result => {
+        if ( result.n ) {
+          return User.findById(req.params.id)
+        } else {
+          res.send(404)          
+        }
+      }).then(user => {
         res.json(user)
         return next()
       })
