@@ -1,8 +1,5 @@
 import * as restify from 'restify';
-import * as mongoose from 'mongoose';
-import { Router } from "../common/router";
 import { User } from './users.model';
-import { NotFoundError } from 'restify-errors';
 import { ModelRouter } from '../common/model-router';
 
 class UsersRouter extends ModelRouter<User> {
