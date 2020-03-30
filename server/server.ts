@@ -1,4 +1,5 @@
 import * as restify from 'restify';
+import * as semver from 'semver';
 import * as mongoose from 'mongoose';
 import { environment } from '../common/environment';
 import { Router } from '../common/router';
@@ -23,13 +24,13 @@ export class Server {
 
         this.application = restify.createServer({
           name: "meat-api",
-          version: "0.1.0"
+          version: "0.1.0"               
         });
         
         this.application.use(restify.plugins.queryParser());
-        this.application.use(restify.plugins.bodyParser());
-        this.application.use(mergePatchBodyParser)        
-                
+        this.application.use(restify.plugins.bodyParser());         
+        this.application.use(mergePatchBodyParser);     
+                               
         // routes 
         for (let router of routers) {
           router.applyRoutes(this.application);

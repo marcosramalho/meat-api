@@ -4,12 +4,21 @@ import * as mongoose from 'mongoose'
 
 export abstract class ModelRouter<D extends mongoose.Document> extends Router {
 
+  basePath: string
+
   constructor(protected model: mongoose.Model<D>) {
-    super();
+    super()
+    this.basePath = `/${model.collection.name}`
   } 
 
   protected prepareOne(query: mongoose.DocumentQuery<D, D>): mongoose.DocumentQuery<D, D> {
     return query
+  }
+
+  envelope(document: any): any {
+    let resoure = Object.assign({_links: {}}, document.toJSON())
+    resoure._links.self = `${this.basePath}/${resoure._id}` 
+    return resoure
   }
 
   validateId = (req, res, next) => {
