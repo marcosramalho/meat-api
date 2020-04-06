@@ -19,6 +19,15 @@ const beforeAllTests = () => {
   return server
   .bootstrap([usersRouter, reviewsRouter, restaurantsRouter])
   .then(() => User.remove({}).exec())
+  .then(() => {
+    let admin = new User()
+    admin.name = "admin"
+    admin.email = "admin@email.com"
+    admin.password = "admin"
+    admin.profiles = ["admin", "user"]
+
+    return admin.save()
+  })
   .then(() => Review.remove({}).exec())
   .then(()=> Restaurant.remove({}).exec())
   .catch(console.error)
